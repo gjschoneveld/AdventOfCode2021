@@ -7,7 +7,6 @@
 }
 
 var input = File.ReadAllLines("input.txt");
-
 var values = input.Select(int.Parse).ToList();
 
 var answer1 = CountIncrements(values);
