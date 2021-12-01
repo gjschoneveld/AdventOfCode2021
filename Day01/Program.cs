@@ -14,6 +14,7 @@ var answer1 = CountIncrements(values);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
+
 var windowed = values
     .Skip(2)
     .Select((value, index) => value + values[index] + values[index + 1])
