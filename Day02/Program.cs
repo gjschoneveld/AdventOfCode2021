@@ -3,7 +3,6 @@
     public int Aim { get; set; }
     public int Distance { get; set; }
     public int Depth { get; set; }
-
 }
 
 class ForwardCommand : Command
