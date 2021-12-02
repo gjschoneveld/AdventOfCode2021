@@ -43,9 +43,9 @@ class Program
         Console.WriteLine($"Answer 1: {answer1}");
 
 
-        int aim = 0;
-        int distance = 0;
-        int depth = 0;
+        var aim = 0;
+        var distance = 0;
+        var depth = 0;
 
         foreach (var cmd in commands)
         {
