@@ -4,6 +4,7 @@
     Down,
     Up
 }
+
 class Command
 {
     public Direction Direction { get; set; }
