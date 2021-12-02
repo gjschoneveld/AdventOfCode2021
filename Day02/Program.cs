@@ -1,29 +1,55 @@
-﻿enum Direction
+﻿class State
 {
-    Forward,
-    Down,
-    Up
+    public int Aim { get; set; }
+    public int Distance { get; set; }
+    public int Depth { get; set; }
+
 }
 
-class Command
+class ForwardCommand : Command
 {
-    public Direction Direction { get; set; }
+    public override void Apply(State state)
+    {
+        state.Distance += Units;
+        state.Depth += state.Aim * Units;
+    }
+}
+
+class DownCommand : Command
+{
+    public override void Apply(State state)
+    {
+        state.Aim += Units;
+    }
+}
+
+class UpCommand : Command
+{
+    public override void Apply(State state)
+    {
+        state.Aim -= Units;
+    }
+}
+
+abstract class Command
+{
     public int Units { get; set; }
+
+    public abstract void Apply(State state);
 
     public static Command Parse(string x)
     {
         var parts = x.Split(' ');
 
-        return new()
+        var direction = parts[0];
+        var units = int.Parse(parts[1]);
+
+        return direction switch
         {
-            Direction = parts[0] switch
-            {
-                "forward" => Direction.Forward,
-                "down" => Direction.Down,
-                "up" => Direction.Up,
-                _ => throw new Exception()
-            },
-            Units = int.Parse(parts[1])
+            "forward" => new ForwardCommand { Units = units },
+            "down" => new DownCommand { Units = units },
+            "up" => new UpCommand { Units = units },
+            _ => throw new Exception()
         };
     }
 }
@@ -35,39 +61,23 @@ class Program
         var input = File.ReadAllLines("input.txt");
         var commands = input.Select(Command.Parse).ToList();
 
-        var forward = commands.Where(c => c.Direction == Direction.Forward).Sum(c => c.Units);
-        var up = commands.Where(c => c.Direction == Direction.Up).Sum(c => c.Units);
-        var down = commands.Where(c => c.Direction == Direction.Down).Sum(c => c.Units);
+        var forward = commands.OfType<ForwardCommand>().Sum(c => c.Units);
+        var up = commands.OfType<UpCommand>().Sum(c => c.Units);
+        var down = commands.OfType<DownCommand>().Sum(c => c.Units);
 
         var answer1 = forward * (down - up);
 
         Console.WriteLine($"Answer 1: {answer1}");
 
 
-        var aim = 0;
-        var distance = 0;
-        var depth = 0;
+        State state = new();
 
         foreach (var cmd in commands)
         {
-            switch (cmd.Direction)
-            {
-                case Direction.Forward:
-                    distance += cmd.Units;
-                    depth += aim * cmd.Units;
-                    break;
-
-                case Direction.Down:
-                    aim += cmd.Units;
-                    break;
-
-                case Direction.Up:
-                    aim -= cmd.Units;
-                    break;
-            }
+            cmd.Apply(state);
         }
 
-        var answer2 = distance * depth;
+        var answer2 = state.Distance * state.Depth;
 
         Console.WriteLine($"Answer 2: {answer2}");
     }
