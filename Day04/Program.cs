@@ -57,28 +57,7 @@ bool HasFullColumn(int[,] board, HashSet<int> chosen)
     return false;
 }
 
-int FirstMatch(List<int[,]> boards, List<int> numbers)
-{
-    HashSet<int> chosen = new();
-
-    foreach (var number in numbers)
-    {
-        chosen.Add(number);
-
-        var match = boards.FirstOrDefault(b => HasFullRow(b, chosen) || HasFullColumn(b, chosen));
-
-        if (match != null)
-        {
-            var sum = match.OfType<int>().Where(x => !chosen.Contains(x)).Sum();
-
-            return sum * number;
-        }
-    }
-
-    throw new Exception();
-}
-
-int LastMatch(List<int[,]> boards, List<int> numbers)
+int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
 {
     HashSet<int> chosen = new();
 
@@ -88,14 +67,14 @@ int LastMatch(List<int[,]> boards, List<int> numbers)
     {
         chosen.Add(number);
 
-        if (candidates.Count > 1)
+        if (!first && candidates.Count > 1)
         {
             candidates = candidates.Where(b => !HasFullRow(b, chosen) && !HasFullColumn(b, chosen)).ToList();
         }
 
         var match = candidates.FirstOrDefault(b => HasFullRow(b, chosen) || HasFullColumn(b, chosen));
 
-        if (candidates.Count == 1 && match != null)
+        if (match != null && (first || candidates.Count == 1))
         {
             var sum = match.OfType<int>().Where(x => !chosen.Contains(x)).Sum();
 
@@ -119,10 +98,10 @@ for (int i = 2; i < input.Length; i += size + 1)
     boards.Add(ParseBoard(lines));
 }
 
-var answer1 = FirstMatch(boards, numbers);
+var answer1 = FindMatch(boards, numbers, true);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
-var answer2 = LastMatch(boards, numbers);
+var answer2 = FindMatch(boards, numbers, false);
 
 Console.WriteLine($"Answer 2: {answer2}");
