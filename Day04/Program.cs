@@ -69,7 +69,7 @@ int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
 
         var match = candidates.FirstOrDefault(b => IsFull(b, chosen));
 
-        if (match != null && (first || candidates.Count == 1))
+        if (match != null)
         {
             var sum = match.OfType<int>().Where(x => !chosen.Contains(x)).Sum();
 
