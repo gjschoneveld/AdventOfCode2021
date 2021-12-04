@@ -47,6 +47,11 @@ bool HasFullColumn(int[,] board, HashSet<int> chosen)
     return HasFullDimension(chosen, (i, j) => board[j, i]);
 }
 
+bool IsFull(int[,] board, HashSet<int> chosen)
+{
+    return HasFullRow(board, chosen) || HasFullColumn(board, chosen);
+}
+
 int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
 {
     HashSet<int> chosen = new();
@@ -59,10 +64,10 @@ int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
 
         if (!first && candidates.Count > 1)
         {
-            candidates = candidates.Where(b => !HasFullRow(b, chosen) && !HasFullColumn(b, chosen)).ToList();
+            candidates = candidates.Where(b => !IsFull(b, chosen)).ToList();
         }
 
-        var match = candidates.FirstOrDefault(b => HasFullRow(b, chosen) || HasFullColumn(b, chosen));
+        var match = candidates.FirstOrDefault(b => IsFull(b, chosen));
 
         if (match != null && (first || candidates.Count == 1))
         {
