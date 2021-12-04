@@ -56,18 +56,16 @@ int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
 {
     HashSet<int> chosen = new();
 
-    List<int[,]> candidates = new(boards);
-
     foreach (var number in numbers)
     {
         chosen.Add(number);
 
-        if (!first && candidates.Count > 1)
+        if (!first && boards.Count > 1)
         {
-            candidates = candidates.Where(b => !IsFull(b, chosen)).ToList();
+            boards = boards.Where(b => !IsFull(b, chosen)).ToList();
         }
 
-        var match = candidates.FirstOrDefault(b => IsFull(b, chosen));
+        var match = boards.FirstOrDefault(b => IsFull(b, chosen));
 
         if (match != null)
         {
