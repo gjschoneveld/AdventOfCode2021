@@ -52,7 +52,7 @@ bool IsFull(int[,] board, HashSet<int> chosen)
     return HasFullRow(board, chosen) || HasFullColumn(board, chosen);
 }
 
-int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
+int FindMatch(List<int[,]> boards, List<int> numbers, bool last)
 {
     HashSet<int> chosen = new();
 
@@ -60,7 +60,7 @@ int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
     {
         chosen.Add(number);
 
-        if (!first && boards.Count > 1)
+        if (last && boards.Count > 1)
         {
             boards = boards.Where(b => !IsFull(b, chosen)).ToList();
         }
@@ -91,10 +91,10 @@ for (int i = 2; i < input.Length; i += size + 1)
     boards.Add(ParseBoard(lines));
 }
 
-var answer1 = FindMatch(boards, numbers, true);
+var answer1 = FindMatch(boards, numbers, false);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
-var answer2 = FindMatch(boards, numbers, false);
+var answer2 = FindMatch(boards, numbers, true);
 
 Console.WriteLine($"Answer 2: {answer2}");
