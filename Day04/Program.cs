@@ -17,15 +17,15 @@ int[,] ParseBoard(string[] lines)
     return board;
 }
 
-bool HasFullRow(int[,] board, HashSet<int> chosen)
+bool HasFullDimension(HashSet<int> chosen, Func<int, int, int> valueSelector)
 {
-    for (int row = 0; row < size; row++)
+    for (int i = 0; i < size; i++)
     {
         var full = true;
 
-        for (int column = 0; column < size; column++)
+        for (int j = 0; j < size; j++)
         {
-            full &= chosen.Contains(board[row, column]);
+            full &= chosen.Contains(valueSelector(i, j));
         }
 
         if (full)
@@ -37,24 +37,14 @@ bool HasFullRow(int[,] board, HashSet<int> chosen)
     return false;
 }
 
+bool HasFullRow(int[,] board, HashSet<int> chosen)
+{
+    return HasFullDimension(chosen, (i, j) => board[i, j]);
+}
+
 bool HasFullColumn(int[,] board, HashSet<int> chosen)
 {
-    for (int column = 0; column < size; column++)
-    {
-        var full = true;
-
-        for (int row = 0; row < size; row++)
-        {
-            full &= chosen.Contains(board[row, column]);
-        }
-
-        if (full)
-        {
-            return true;
-        }
-    }
-
-    return false;
+    return HasFullDimension(chosen, (i, j) => board[j, i]);
 }
 
 int FindMatch(List<int[,]> boards, List<int> numbers, bool first)
