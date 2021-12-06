@@ -1,4 +1,4 @@
-﻿Queue<long> createQueue(int size, Dictionary<long, int>? values = null)
+﻿Queue<long> CreateQueue(int size, Dictionary<long, int>? values = null)
 {
     var queue = new Queue<long>(size);
 
@@ -22,8 +22,8 @@ long Simulate(Dictionary<long, int> values, int days)
     var regularSize = 7;
     var newSize = 2;
 
-    var regularQueue = createQueue(regularSize, values);
-    var newQueue = createQueue(newSize);
+    var regularQueue = CreateQueue(regularSize, values);
+    var newQueue = CreateQueue(newSize);
 
     for (int day = 1; day <= days; day++)
     {
