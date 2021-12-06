@@ -1,4 +1,4 @@
-﻿Queue<long> CreateQueue(int size, Dictionary<long, int>? values = null)
+﻿Queue<long> CreateQueue(int size, Dictionary<int, int>? values = null)
 {
     var queue = new Queue<long>(size);
 
@@ -17,7 +17,7 @@
     return queue;
 }
 
-long Simulate(Dictionary<long, int> values, int days)
+long Simulate(Dictionary<int, int> values, int days)
 {
     var regularSize = 7;
     var newSize = 2;
@@ -41,7 +41,7 @@ var input = File.ReadAllText("input.txt");
 
 var values = input
     .Split(',', StringSplitOptions.RemoveEmptyEntries)
-    .Select(long.Parse)
+    .Select(int.Parse)
     .GroupBy(v => v)
     .ToDictionary(g => g.Key, g => g.Count());
 
