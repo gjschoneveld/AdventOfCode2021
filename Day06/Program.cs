@@ -40,7 +40,7 @@ long Simulate(Dictionary<int, int> values, int days)
 var input = File.ReadAllText("input.txt");
 
 var values = input
-    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+    .Split(',')
     .Select(int.Parse)
     .GroupBy(v => v)
     .ToDictionary(g => g.Key, g => g.Count());
