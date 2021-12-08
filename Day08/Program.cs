@@ -3,11 +3,6 @@
     "abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg"
 };
 
-string Map(string signal, string mapping)
-{
-    return new string(signal.Select(c => mapping[c - 'a']).OrderBy(c => c).ToArray());
-}
-
 (List<string> signals, List<string> output) Parse(string line)
 {
     var parts = line.Split(new char[] { ' ', '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -33,6 +28,11 @@ List<string> Permutations(string x)
     }
 
     return result;
+}
+
+string Map(string signal, string mapping)
+{
+    return new string(signal.Select(c => mapping[c - 'a']).OrderBy(c => c).ToArray());
 }
 
 string FindMapping(List<string> signals)
