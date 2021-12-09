@@ -1,6 +1,6 @@
 ﻿int[,] Parse(string[] lines)
 {
-    var result = new int[lines.Length,lines[0].Length];
+    var result = new int[lines.Length, lines[0].Length];
 
     for (int row = 0; row < result.GetLength(0); row++)
     {
