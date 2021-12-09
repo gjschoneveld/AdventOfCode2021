@@ -93,7 +93,7 @@ var answer1 = lowest.Sum(p => GetValue(field, p) + 1);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
-var basinSizes = lowest.Select(p => FindBasinSize(field, p));
+var basinSizes = lowest.Select(p => FindBasinSize(field, p)).ToList();
 
 var answer2 = basinSizes
     .OrderByDescending(s => s)
