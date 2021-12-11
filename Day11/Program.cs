@@ -72,7 +72,7 @@ int Step(int[,] field)
     return flashed.Count;
 }
 
-int HundredSteps(string[] input)
+int FlashesInHundredSteps(string[] input)
 {
     var field = Parse(input);
 
@@ -110,7 +110,7 @@ int FindAllFlashStep(string[] input)
 
 var input = File.ReadAllLines("input.txt");
 
-var answer1 = HundredSteps(input);
+var answer1 = FlashesInHundredSteps(input);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
