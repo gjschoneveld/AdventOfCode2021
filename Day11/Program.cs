@@ -38,27 +38,27 @@ List<(int x, int y)> GetNeighbours(int[,] field, (int x, int y) position)
 
 int Step(int[,] field)
 {
-    List<(int x, int y)> toIncrease = new();
+    List<(int x, int y)> toIncrement = new();
 
     for (int row = 0; row < field.GetLength(0); row++)
     {
         for (int column = 0; column < field.GetLength(1); column++)
         {
-            toIncrease.Add((x: column, y: row));
+            toIncrement.Add((x: column, y: row));
         }
     }
 
     HashSet<(int x, int y)> flashed = new();
 
-    while (toIncrease.Count > 0)
+    while (toIncrement.Count > 0)
     {
-        foreach (var position in toIncrease)
+        foreach (var position in toIncrement)
         {
             field[position.y, position.x]++;
         }
 
         int flashLimit = 9;
-        var toFlash = toIncrease.Where(p => field[p.y, p.x] > flashLimit).Distinct().ToList();
+        var toFlash = toIncrement.Where(p => field[p.y, p.x] > flashLimit).Distinct().ToList();
 
         foreach (var position in toFlash)
         {
@@ -66,44 +66,54 @@ int Step(int[,] field)
             flashed.Add(position);
         }
 
-        toIncrease = toFlash.SelectMany(p => GetNeighbours(field, p)).Where(p => !flashed.Contains(p)).ToList();
+        toIncrement = toFlash.SelectMany(p => GetNeighbours(field, p)).Where(p => !flashed.Contains(p)).ToList();
     }
 
     return flashed.Count;
 }
 
-var input = File.ReadAllLines("input.txt");
-var field = Parse(input);
-
-int step;
-int total = 0;
-
-for (step = 1; step <= 100; step++)
+int HundredSteps(string[] input)
 {
-    total += Step(field);
+    var field = Parse(input);
+
+    int total = 0;
+
+    for (int step = 1; step <= 100; step++)
+    {
+        total += Step(field);
+    }
+
+    return total;
 }
 
-var answer1 = total;
+int FindAllFlashStep(string[] input)
+{
+    var field = Parse(input);
+
+    int step = 1;
+
+    while (true)
+    {
+        var flashes = Step(field);
+
+        if (flashes == field.Length)
+        {
+            break;
+        }
+
+        step++;
+    }
+
+    return step;
+}
+
+
+var input = File.ReadAllLines("input.txt");
+
+var answer1 = HundredSteps(input);
 
 Console.WriteLine($"Answer 1: {answer1}");
 
-
-field = Parse(input);
-
-step = 1;
-
-while (true)
-{
-    var flashes = Step(field);
-
-    if (flashes == field.Length)
-    {
-        break;
-    }
-
-    step++;
-}
-
-var answer2 = step;
+var answer2 = FindAllFlashStep(input);
 
 Console.WriteLine($"Answer 2: {answer2}");
