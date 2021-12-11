@@ -38,30 +38,27 @@ List<(int x, int y)> GetNeighbours(int[,] field, (int x, int y) position)
 
 int Step(int[,] field)
 {
-    int flashLimit = 9;
-
-    List<(int x, int y)> toFlash = new();
+    List<(int x, int y)> toIncrease = new();
 
     for (int row = 0; row < field.GetLength(0); row++)
     {
         for (int column = 0; column < field.GetLength(1); column++)
         {
-            field[row, column]++;
-
-            if (field[row, column] > flashLimit)
-            {
-                toFlash.Add((x: column, y: row));
-            }
+            toIncrease.Add((x: column, y: row));
         }
     }
 
-    int flashes = 0;
-
     HashSet<(int x, int y)> flashed = new();
 
-    while (toFlash.Count > 0)
+    while (toIncrease.Count > 0)
     {
-        flashes += toFlash.Count;
+        foreach (var position in toIncrease)
+        {
+            field[position.y, position.x]++;
+        }
+
+        int flashLimit = 9;
+        var toFlash = toIncrease.Where(p => field[p.y, p.x] > flashLimit).Distinct().ToList();
 
         foreach (var position in toFlash)
         {
@@ -69,17 +66,10 @@ int Step(int[,] field)
             flashed.Add(position);
         }
 
-        var neighbours = toFlash.SelectMany(p => GetNeighbours(field, p)).Where(p => !flashed.Contains(p)).ToList();
-
-        foreach (var position in neighbours)
-        {
-            field[position.y, position.x]++;
-        }
-
-        toFlash = neighbours.Where(p => field[p.y, p.x] > flashLimit).Distinct().ToList();
+        toIncrease = toFlash.SelectMany(p => GetNeighbours(field, p)).Where(p => !flashed.Contains(p)).ToList();
     }
 
-    return flashes;
+    return flashed.Count;
 }
 
 var input = File.ReadAllLines("input.txt");
