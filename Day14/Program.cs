@@ -98,11 +98,11 @@ long Simulate(Dictionary<string, char> rules, string start, int steps)
 
 var input = File.ReadAllLines("input.txt");
 
-var x = input[0];
+var start = input[0];
 var rules = input[2..].Select(ParseRule).ToDictionary(r => r.from, r => r.to);
 
-var answer1 = Simulate(rules, x, 10);
+var answer1 = Simulate(rules, start, 10);
 Console.WriteLine($"Answer 1: {answer1}");
 
-var answer2 = Simulate(rules, x, 40);
+var answer2 = Simulate(rules, start, 40);
 Console.WriteLine($"Answer 2: {answer2}");
