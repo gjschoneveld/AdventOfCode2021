@@ -31,17 +31,17 @@ var y1 = int.Parse(matches[2].Value);
 var y2 = int.Parse(matches[3].Value);
 
 var minX = 0;
-var maxX = x2 + 1;
+var maxX = x2;
 
-var minY = y1 - 1;
+var minY = y1;
 var maxY = -y1;
 
 var max = 0;
 var count = 0;
 
-for (int y = minY; y < maxY; y++)
+for (int y = minY; y <= maxY; y++)
 {
-    for (int x = minX; x < maxX; x++)
+    for (int x = minX; x <= maxX; x++)
     {
         var result = Simulate((x, y), (x1, x2, y1, y2));
 
